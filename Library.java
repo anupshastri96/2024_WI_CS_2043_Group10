@@ -17,8 +17,15 @@ public class Library {
 	}
 	
 	//work on removeBook method
-	public void removeBook (Book book) {
-	}
+	public void removeBook(String callNumber) {
+		for (Book book : books) {
+		    if (book.getCallNumber().equals(callNumber)) {
+		        books.remove(book);
+		        return; // Exit the method once the book is removed
+		    }
+		}
+		System.out.println("Book with call number " + callNumber + " not found.");
+        }
 	
 	//work on trackBook method
 	public void trackBook (Book book) {
