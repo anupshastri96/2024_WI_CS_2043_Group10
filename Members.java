@@ -14,7 +14,7 @@ public class Members{
         this.name = name;
         this.age = age;
         this.phoneNumber = phoneNumber;
-        this.memID = membershipID++;,
+        this.memID = membershipID++;
         this.ethnicity = ethnicity;
         membershipDate = LocalDate.now(); 
     } 

@@ -4,9 +4,9 @@ public class Library {
 	private int libraryID;
 	private String address;
         private String branchName;
-        private ArrayList<Book> bookList = new ArrayList<Book>;
+        private ArrayList<Book> bookList = new ArrayList<Book>();
 
-        public Library (int libraryID, String address, String branchName) {
+    public Library (int libraryID, String address, String branchName) {
 	    this.libraryID = libraryID;
 	    this.address = address;
 	    this.branchName = branchName;
@@ -25,7 +25,7 @@ public class Library {
 		    }
 		}
 		System.out.println("Book with call number " + callNumber + " not found.");
-        }
+    }
 	
 	//work on trackBook method
 	public void trackBook (Book book) {
@@ -44,12 +44,12 @@ public class Library {
 	}
 	
 	//work on checkOutBook function
-	public void renewMembership (Member menber) {
+	public void renewMembership (Members member) {
 	}
 	
 	//work on checkOutBook function
 	public String analyzeData () {
-	    return
+	    return;
 	}
 	
 	public int getLibraryID () {
@@ -63,7 +63,41 @@ public class Library {
 	public String getBranchName() {
 	    return branchName;
 	}
-	
+	/**
+	 * This method checks if a book is in the library system
+	 *@param book The book object in question
+	 * @return check a boolean value
+	 */
+	public boolean checkForBook(Book book) {
+		boolean check = false;
+		Book bookInList = bookList.get(0);
+		int size = bookList.size();
+		for(int i = 0;i < size;i++) {
+			if(i + 1 == size) {
+				return check;
+			}
+			if(bookInList.getCallNumber() == book.getCallNumber()) {
+				check = true;
+				break;
+			}
+		}
+		return check;
+	}
+	/*
+	 * This method checks if a certain book has availablability
+	 * @param book The book in question
+	 * @return check A boolean value
+	 */
+	public boolean checkAvailabilty(Book book) {
+		boolean check = false;
+		if(book.getBookCount() == 0) {
+			return check;
+		}
+		else{
+			check = true;
+		}
+		return check;
+	}
 	public void getBookList() {
 	    int size = bookList.size(); 
     	    for (int i = 0; i < size; i++) {

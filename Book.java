@@ -2,9 +2,10 @@ public class Book {
     private String title;
     private String author;
     private String callNumber;
-    private String borrower;
+    private Members borrower;
     private int daysLate;
     private double lateFee;
+    private int bookCount;
 
     public Book(String title, String author, String callNumber) {
         this.title = title;
@@ -13,6 +14,7 @@ public class Book {
         this.borrower = null;
         this.daysLate = 0;
         this.lateFee = 0.0;
+        this.bookCount = 1;
     }
 
     // Getters and setters
@@ -29,14 +31,16 @@ public class Book {
         return callNumber;
     }
 
-    public String getBorrower() {
+    public Members getBorrower() {
         return borrower;
     }
 
-    public void setBorrower(Member borrower) {
+    public void setBorrower(Members borrower) {
         this.borrower = borrower;
     }
-
+	public int getBookCount() {
+		return bookCount;
+	}
     public int getDaysLate() {
         return daysLate;
     }
