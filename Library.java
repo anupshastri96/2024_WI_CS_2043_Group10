@@ -17,10 +17,13 @@ public class Library {
 	
 	//work on checkOutBook function
 	public void checkOutBook (Book book) {
+		bookList.remove(book);
+		
 	}
 	
 	//work on checkOutBook function
 	public void returnBook(Book book) {
+		bookList.add(book);
 	}
 	
 	//work on checkOutBook function
