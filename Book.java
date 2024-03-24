@@ -1,4 +1,4 @@
-public class Book {
+public class Book implements Comparable<Book> {
     private String title;
     private String author;
     private String callNumber;
@@ -55,5 +55,16 @@ public class Book {
 
     public void calculateLateFee() {
         this.lateFee = lateFee * daysLate;
+    }
+    public int compareTo(Book book) {
+    	if(this.getTitle() == book.getTitle()) {
+    		return 1;
+    	}
+    	if(this.getCallNumber() == book.getCallNumber()) {
+    		return 0;
+    	}
+    	else {
+    		return -1;
+    	}
     }
 }

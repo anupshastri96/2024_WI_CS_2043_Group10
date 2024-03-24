@@ -54,4 +54,7 @@ public class Members{
     public LocalDate getMemDate(){
         return membershipDate;
     }
+    public void setMemDate(LocalDate memDate) {
+    	membershipDate = memDate;
+    }
 }

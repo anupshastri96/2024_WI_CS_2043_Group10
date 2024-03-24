@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import java.time.LocalDate;
 public class Library {
 	private int libraryID;
 	private String address;
@@ -45,6 +45,19 @@ public class Library {
 	
 	//work on checkOutBook function
 	public void renewMembership (Members member) {
+		LocalDate date = LocalDate.now();
+		LocalDate oldDate = member.getMemDate();
+		if(date.getYear() - oldDate.getYear() >= 1) {
+			if(date.getMonthValue() - oldDate.getMonthValue() == 0) {
+				if(date.getDayOfMonth() - oldDate.getDayOfMonth() <= 0) {
+					member.setMemDate(date);
+				}
+			}
+		}
+		else {
+			return;
+		}
+		return;
 	}
 	
 	//work on checkOutBook function
@@ -70,13 +83,14 @@ public class Library {
 	 */
 	public boolean checkForBook(Book book) {
 		boolean check = false;
-		Book bookInList = bookList.get(0);
+		Book bookInList;
 		int size = bookList.size();
 		for(int i = 0;i < size;i++) {
+			bookInList = bookList.get(i);
 			if(i + 1 == size) {
 				return check;
 			}
-			if(bookInList.getCallNumber() == book.getCallNumber()) {
+			if(bookInList.compareTo(book) == 1) {
 				check = true;
 				break;
 			}
