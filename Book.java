@@ -14,21 +14,32 @@ public class Book implements Comparable<Book> {
         this.borrower = null;
         this.daysLate = 0;
         this.lateFee = 0.0;
-        this.bookCount = 1;
+        this.bookCount = 1; // Assuming each book starts with a count of 1
     }
 
-    // Getters and setters
+    // Getters and Setters
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getAuthor() {
         return author;
     }
 
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getCallNumber() {
         return callNumber;
+    }
+
+    public void setCallNumber(String callNumber) {
+        this.callNumber = callNumber;
     }
 
     public Members getBorrower() {
@@ -38,9 +49,7 @@ public class Book implements Comparable<Book> {
     public void setBorrower(Members borrower) {
         this.borrower = borrower;
     }
-	public int getBookCount() {
-		return bookCount;
-	}
+
     public int getDaysLate() {
         return daysLate;
     }
@@ -53,8 +62,8 @@ public class Book implements Comparable<Book> {
         return lateFee;
     }
 
-    public void calculateLateFee() {
-        this.lateFee = lateFee * daysLate;
+    public void setLateFee(double lateFee) {
+        this.lateFee = lateFee;
     }
     public int compareTo(Book book) {
     	if(this.getTitle() == book.getTitle()) {
@@ -67,4 +76,16 @@ public class Book implements Comparable<Book> {
     		return -1;
     	}
     }
+    public int getBookCount() {
+        return bookCount;
+    }
+
+    public void setBookCount(int bookCount) {
+        this.bookCount = bookCount;
+    }
+
+    public void calculateLateFee() {
+        this.lateFee = 0.5 * daysLate; 
+    }
+
 }

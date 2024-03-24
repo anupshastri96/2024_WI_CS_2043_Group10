@@ -1,32 +1,16 @@
 import java.util.ArrayList;
 import java.time.LocalDate;
 public class Library {
-	private int libraryID;
-	private String address;
-        private String branchName;
-        private ArrayList<Book> bookList = new ArrayList<Book>();
+    private int libraryID;
+    private String address;
+    private String branchName;
+    private ArrayList<Book> bookList = new ArrayList<>();
 
-    public Library (int libraryID, String address, String branchName) {
-	    this.libraryID = libraryID;
-	    this.address = address;
-	    this.branchName = branchName;
-	}
-	
-	public void addBook (Book book) {
-	    bookList.add(book);
-	}
-	
-	//work on removeBook method
-	public void removeBook(String callNumber) {
-		for (Book book : books) {
-		    if (book.getCallNumber().equals(callNumber)) {
-		        books.remove(book);
-		        return; // Exit the method once the book is removed
-		    }
-		}
-		System.out.println("Book with call number " + callNumber + " not found.");
+    public Library(int libraryID, String address, String branchName) {
+        this.libraryID = libraryID;
+        this.address = address;
+        this.branchName = branchName;
     }
-	
 	//work on trackBook method
 	public void trackBook (Book book) {
 	}
@@ -42,15 +26,14 @@ public class Library {
 	//work on checkOutBook function
 	public void searchBook (Book book) {
 	}
-	
 	//work on checkOutBook function
 	public void renewMembership (Members member) {
 		LocalDate date = LocalDate.now();
-		LocalDate oldDate = member.getMemDate();
+		LocalDate oldDate = member.getMembershipDate();
 		if(date.getYear() - oldDate.getYear() >= 1) {
 			if(date.getMonthValue() - oldDate.getMonthValue() == 0) {
 				if(date.getDayOfMonth() - oldDate.getDayOfMonth() <= 0) {
-					member.setMemDate(date);
+					member.setMembershipDate(date);
 				}
 			}
 		}
@@ -62,7 +45,7 @@ public class Library {
 	
 	//work on checkOutBook function
 	public String analyzeData () {
-	    return;
+	    return "";
 	}
 	
 	public int getLibraryID () {
@@ -75,27 +58,6 @@ public class Library {
 	
 	public String getBranchName() {
 	    return branchName;
-	}
-	/**
-	 * This method checks if a book is in the library system
-	 *@param book The book object in question
-	 * @return check a boolean value
-	 */
-	public boolean checkForBook(Book book) {
-		boolean check = false;
-		Book bookInList;
-		int size = bookList.size();
-		for(int i = 0;i < size;i++) {
-			bookInList = bookList.get(i);
-			if(i + 1 == size) {
-				return check;
-			}
-			if(bookInList.compareTo(book) == 1) {
-				check = true;
-				break;
-			}
-		}
-		return check;
 	}
 	/*
 	 * This method checks if a certain book has availablability
@@ -112,11 +74,57 @@ public class Library {
 		}
 		return check;
 	}
-	public void getBookList() {
+	public void getStringBookList() {
 	    int size = bookList.size(); 
     	    for (int i = 0; i < size; i++) {
-    	    	System.out.println(bookList[i].toString);
+    	    	System.out.println(bookList.get(i).toString);
     	    }
 	}
-	
-} 
+
+    public void setLibraryID(int libraryID) {
+        this.libraryID = libraryID;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public ArrayList<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(ArrayList<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    public void addBook(Book book) {
+        bookList.add(book);
+    }
+
+    public void removeBook(String callNumber) {
+        for (Book book : bookList) {
+            if (book.getCallNumber().equals(callNumber)) {
+                bookList.remove(book);
+                return; 
+            }
+        }
+        System.out.println("Book with call number " + callNumber + " not found.");
+    }
+
+    public boolean checkForBook(Book book) {
+        for (Book b : bookList) {
+            if (b.getCallNumber().equals(book.getCallNumber())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkAvailability(Book book) {
+        return book.getBookCount() > 0;
+    }
+
+}
