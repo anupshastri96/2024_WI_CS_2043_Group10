@@ -1,13 +1,12 @@
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class AllTests {
+public class AllTests {
 
 	@Test
 	void testCheckOutBookBorrower() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 		} catch (Exception e) {
@@ -19,8 +18,8 @@ class AllTests {
 	
 	@Test
 	void testCheckOutBookAvailable() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 		} catch (Exception e) {
@@ -32,8 +31,8 @@ class AllTests {
 	
 	@Test
 	void testCheckOutBookDueDate() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 		} catch (Exception e) {
@@ -45,8 +44,8 @@ class AllTests {
 	
 	@Test
 	void testReturnBookBorrower() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 			book1.returnBook();
@@ -59,8 +58,8 @@ class AllTests {
 	
 	@Test
 	void testReturnBookAvailable() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 			book1.returnBook();
@@ -73,8 +72,8 @@ class AllTests {
 	
 	@Test
 	void testReturnBookDueDate() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 			book1.returnBook();
@@ -87,68 +86,70 @@ class AllTests {
 	
 	@Test
 	void testToFileFormat() {
-		Member member = new Member("1", "John Doe", "123456789", "123 Main St");
+		Members member = new Members("1", "John Doe", "123456789", "123 Main St");
 		String expectedString = "1;John Doe; 123456789;123 Main St";
+		String text = "";
 		try {
-			String text = member.toFileFormat()
+			text = member.toFileFormat();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(text, expectedString)
+		Assert.assertEquals(text, expectedString);
         }
         
         @Test
         void testAddBook() {
 		Library library = new Library();
+		Book book = new Book("1", "Book Title", "Author");
 		try {
-			Book book = new Book("1", "Book Title", "Author");
 			library.addBook(book);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertTrue(library.searchBooksByTitle("Book Title").contains(book));
+		Assert.assertTrue(library.searchBooksByTitle("Book Title").contains(book));
 	 }
 
 	    @Test
 	    void testRemoveBook() {
 		Library library = new Library();
+		Book book = new Book("1", "Book Title", "Author");
 		try {
-			Book book = new Book("1", "Book Title", "Author");
 			library.addBook(book);
 		        library.removeBook(book);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertFalse(library.searchBooksByTitle("Book Title").contains(book));
+		Assert.assertFalse(library.searchBooksByTitle("Book Title").contains(book));
 	    }
 
 	    @Test
 	    void testAddMember() {
 		Library library = new Library();
+		Members member = new Members("1", "John Doe", "123456789", "123 Main St");
 		try {
-			Member member = new Member("1", "John Doe", "123456789", "123 Main St");
+			
 			library.addMember(member);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(member, library.findMemberById("1"));
+		Assert.assertEquals(member, library.findMemberById("1"));
 	    }
 
 	    @Test
 	    void testRemoveMember() {
 		Library library = new Library();
 		try {
-			Member member = new Member("1", "John Doe", "123456789", "123 Main St");
+			Members member = new Members("1", "John Doe", "123456789", "123 Main St");
 			library.addMember(member);
 			library.removeMember("1");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertNull(library.findMemberById("1"))  
+		Assert.assertNull(library.findMemberById("1")); 
 	    }
 }

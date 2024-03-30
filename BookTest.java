@@ -1,13 +1,12 @@
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class BookTest {
 	
 	@Test
 	void testCheckOutBookBorrower() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 		} catch (Exception e) {
@@ -19,8 +18,8 @@ class BookTest {
 	
 	@Test
 	void testCheckOutBookAvailable() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 		} catch (Exception e) {
@@ -32,8 +31,8 @@ class BookTest {
 	
 	@Test
 	void testCheckOutBookDueDate() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 		} catch (Exception e) {
@@ -45,8 +44,8 @@ class BookTest {
 	
 	@Test
 	void testReturnBookBorrower() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 			book1.returnBook();
@@ -59,8 +58,8 @@ class BookTest {
 	
 	@Test
 	void testReturnBookAvailable() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 			book1.returnBook();
@@ -73,8 +72,8 @@ class BookTest {
 	
 	@Test
 	void testReturnBookDueDate() {
-		Book book1 = Book (300, "Study of Precipitation", "Vin Stawman")
-		String borrower = "Dylan Conman"
+		Book book1 = new Book ("300", "Study of Precipitation", "Vin Stawman");
+		String borrower = "Dylan Conman";
 		try {
 			book1.checkoutBook(borrower);
 			book1.returnBook();

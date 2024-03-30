@@ -1,10 +1,10 @@
-public class Member {
+public class Members {
     private String id;
     private String name;
     private String phoneNumber;
     private String address;
 
-    public Member(String id, String name, String phoneNumber, String address) {
+    public Members(String id, String name, String phoneNumber, String address) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -31,8 +31,8 @@ public class Member {
         return id + ";" + name + ";" + phoneNumber + ";" + address;
     }
 
-    public static Member fromFileFormat(String line) {
+    public static Members fromFileFormat(String line) {
         String[] parts = line.split(";");
-        return new Member(parts[0], parts[1], parts[2], parts[3]);
+        return new Members(parts[0], parts[1], parts[2], parts[3]);
     }
 }

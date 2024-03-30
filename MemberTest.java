@@ -1,19 +1,19 @@
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class MemberTest {
 
 	@Test
 	void testToFileFormat() {
-		Member member = new Member("1", "John Doe", "123456789", "123 Main St");
+		Members member = new Members("1", "John Doe", "123456789", "123 Main St");
 		String expectedString = "1;John Doe; 123456789;123 Main St";
+		String text = "";
 		try {
-			String text = member.toFileFormat()
+			text = member.toFileFormat();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(text, expectedString)
+		Assert.assertEquals(text, expectedString);
         }
 }

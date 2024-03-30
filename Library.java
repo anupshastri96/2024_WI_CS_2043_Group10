@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Library {
     List<Book> books = new ArrayList<>();
-    List<Member> members = new ArrayList<>();
+    List<Members> members = new ArrayList<>();
 
     public Library() {
         loadBooksFromFile();
@@ -51,7 +51,7 @@ public class Library {
         return null;
     }
 
-    public boolean addMember(Member member) {
+    public boolean addMember(Members member) {
         if (!members.contains(member)) {
             members.add(member);
             saveMembersToFile();
@@ -61,9 +61,9 @@ public class Library {
     }
 
     public boolean removeMember(String memberId) {
-        Iterator<Member> iterator = members.iterator();
+        Iterator<Members> iterator = members.iterator();
         while (iterator.hasNext()) {
-            Member member = iterator.next();
+            Members member = iterator.next();
             if (member.getId().equals(memberId)) {
                 iterator.remove();
                 saveMembersToFile();
@@ -73,8 +73,8 @@ public class Library {
         return false;
     }
     
-    public Member findMemberById(String memberId) {
-        for (Member member : members) {
+    public Members findMemberById(String memberId) {
+        for (Members member : members) {
             if (member.getId().equals(memberId)) {
                 return member;
             }
@@ -105,7 +105,7 @@ public class Library {
 
     private void saveMembersToFile() {
         try (PrintWriter writer = new PrintWriter(new FileWriter("members.txt"))) {
-            for (Member member : members) {
+            for (Members member : members) {
                 writer.println(member.toFileFormat());
             }
         } catch (IOException e) {
@@ -117,15 +117,15 @@ public class Library {
         try (BufferedReader reader = new BufferedReader(new FileReader("members.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                members.add(Member.fromFileFormat(line));
+                members.add(Members.fromFileFormat(line));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Member findMemberByName(String memberName) {
-        for (Member member : members) {
+    public Members findMemberByName(String memberName) {
+        for (Members member : members) {
             if (member.getName().equalsIgnoreCase(memberName)) {
                 return member;
             }

@@ -1,60 +1,60 @@
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 class LibraryTest {
 
     @Test
     public void testAddBook() {
         Library library = new Library();
+        Book book = new Book("1", "Book Title", "Author");
         try {
-		Book book = new Book("1", "Book Title", "Author");
 		library.addBook(book);
         } catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
         }
-        assertTrue(library.searchBooksByTitle("Book Title").contains(book));
+        Assert.assertTrue(library.searchBooksByTitle("Book Title").contains(book));
     }
 
     @Test
     public void testRemoveBook() {
         Library library = new Library();
+        Book book = new Book("1", "Book Title", "Author");
         try {
-		Book book = new Book("1", "Book Title", "Author");
         	library.addBook(book);
                 library.removeBook(book);
         } catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
         }
-        assertFalse(library.searchBooksByTitle("Book Title").contains(book));
+        Assert.assertFalse(library.searchBooksByTitle("Book Title").contains(book));
     }
 
     @Test
     public void testAddMember() {
         Library library = new Library();
+        Members member = new Members("1", "John Doe", "123456789", "123 Main St");
         try {
-		Member member = new Member("1", "John Doe", "123456789", "123 Main St");
 		library.addMember(member);
         } catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
         }
-        assertEquals(member, library.findMemberById("1"));
+        Assert.assertEquals(member, library.findMemberById("1"));
     }
 
     @Test
     public void testRemoveMember() {
         Library library = new Library();
         try {
-		Member member = new Member("1", "John Doe", "123456789", "123 Main St");
+		Members member = new Members("1", "John Doe", "123456789", "123 Main St");
 		library.addMember(member);
 		library.removeMember("1");
         } catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
         }
-        assertNull(library.findMemberById("1"))  
+        Assert.assertNull(library.findMemberById("1"));
     }
 
 }
