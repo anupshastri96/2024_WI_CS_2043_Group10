@@ -1,133 +1,111 @@
-import java.util.ArrayList;
-import java.time.LocalDate;
-public class Library {
-    private int libraryID;
-    private String address;
-    private String branchName;
-    private ArrayList<Book> bookList = new ArrayList<>();
+import java.util.Date;
 
-    public Library(int libraryID, String address, String branchName) {
-        this.libraryID = libraryID;
-        this.address = address;
-        this.branchName = branchName;
-    }
-	//work on trackBook method
-	public void trackBook (Book book) {
-	}
-	
-	//work on checkOutBook function
-	public void checkOutBook (Book book) {
-		bookList.remove(book);
-		
-	}
-	
-	//work on checkOutBook function
-	public void returnBook(Book book) {
-		bookList.add(book);
-	}
-	
-	//work on checkOutBook function
-	public void searchBook (Book book) {
-	}
-	//work on checkOutBook function
-	public void renewMembership (Members member) {
-		LocalDate date = LocalDate.now();
-		LocalDate oldDate = member.getMembershipDate();
-		if(date.getYear() - oldDate.getYear() >= 1) {
-			if(date.getMonthValue() - oldDate.getMonthValue() == 0) {
-				if(date.getDayOfMonth() - oldDate.getDayOfMonth() <= 0) {
-					member.setMembershipDate(date);
-				}
-			}
-		}
-		else {
-			return;
-		}
-		return;
-	}
-	
-	//work on checkOutBook function
-	public String analyzeData () {
-	    return "";
-	}
-	
-	public int getLibraryID () {
-	    return libraryID;
-	}
-	
-	public String getAddress() {
-	    return address;
-	}
-	
-	public String getBranchName() {
-	    return branchName;
-	}
-	/*
-	 * This method checks if a certain book has availablability
-	 * @param book The book in question
-	 * @return check A boolean value
-	 */
-	public boolean checkAvailabilty(Book book) {
-		boolean check = false;
-		if(book.getBookCount() == 0) {
-			return check;
-		}
-		else{
-			check = true;
-		}
-		return check;
-	}
-	public void getStringBookList() {
-	    int size = bookList.size(); 
-    	    for (int i = 0; i < size; i++) {
-    	    	System.out.println(bookList.get(i).toString);
-    	    }
-	}
+public class Book {
+    private String id;
+    private String title;
+    private String author;
+    private boolean available;
+    private String borrower; // New field to store borrower's name
+    private Date dueDate; // New field to store due date for borrowed books
 
-    public void setLibraryID(int libraryID) {
-        this.libraryID = libraryID;
+    public Book(String id, String title, String author) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.available = true;
+        this.borrower = null; // Initialize borrower to null
+        this.dueDate = null; // Initialize dueDate to null
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
+    public String getId() {
+        return id;
     }
 
-    public ArrayList<Book> getBookList() {
-        return bookList;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBookList(ArrayList<Book> bookList) {
-        this.bookList = bookList;
+    public String getAuthor() {
+        return author;
     }
 
-    public void addBook(Book book) {
-        bookList.add(book);
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void removeBook(String callNumber) {
-        for (Book book : bookList) {
-            if (book.getCallNumber().equals(callNumber)) {
-                bookList.remove(book);
-                return; 
-            }
+    public String getBorrower() {
+        return borrower;
+    }
+
+    public void setBorrower(String borrower) {
+        this.borrower = borrower;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public void checkoutBook(String memberName) {
+        if (this.available) {
+            this.available = false;
+            this.borrower = memberName;
+            this.dueDate = new Date(System.currentTimeMillis() + (7 * 24 * 60 * 60 * 1000)); // 7 days from now
         }
-        System.out.println("Book with call number " + callNumber + " not found.");
     }
 
-    public boolean checkForBook(Book book) {
-        for (Book b : bookList) {
-            if (b.getCallNumber().equals(book.getCallNumber())) {
-                return true;
-            }
+    public void returnBook() {
+        if (!this.available) {
+            this.available = true;
+            this.borrower = null;
+            this.dueDate = null;
         }
-        return false;
     }
 
-    public boolean checkAvailability(Book book) {
-        return book.getBookCount() > 0;
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", available=" + available +
+                ", borrower='" + borrower + '\'' +
+                ", dueDate=" + dueDate +
+                '}';
+    }
+    public String toFileFormat() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(id).append(",").append(title).append(",").append(author).append(",");
+        sb.append(available).append(",");
+        if (available) {
+            sb.append("null,null"); // No borrower and due date for available books
+        } else {
+            sb.append(borrower).append(",").append(dueDate.getTime()); // Store borrower and due date
+        }
+        return sb.toString();
     }
 
+    public static Book fromFileFormat(String line) {
+        String[] parts = line.split(",");
+        if (parts.length >= 6) {
+            String id = parts[0];
+            String title = parts[1];
+            String author = parts[2];
+            boolean available = Boolean.parseBoolean(parts[3]);
+            String borrower = parts[4].equals("null") ? null : parts[4];
+            Date dueDate = parts[5].equals("null") ? null : new Date(Long.parseLong(parts[5]));
+            Book book = new Book(id, title, author);
+            book.available = available;
+            book.borrower = borrower;
+            book.dueDate = dueDate;
+            return book;
+        } else {
+            // Handle case where there are not enough elements in the array
+            return null; // Or throw an exception
+        }
+    }
+    
 }

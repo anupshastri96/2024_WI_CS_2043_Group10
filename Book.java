@@ -1,91 +1,111 @@
-public class Book implements Comparable<Book> {
+import java.util.Date;
+
+public class Book {
+    private String id;
     private String title;
     private String author;
-    private String callNumber;
-    private Members borrower;
-    private int daysLate;
-    private double lateFee;
-    private int bookCount;
+    private boolean available;
+    private String borrower; // New field to store borrower's name
+    private Date dueDate; // New field to store due date for borrowed books
 
-    public Book(String title, String author, String callNumber) {
+    public Book(String id, String title, String author) {
+        this.id = id;
         this.title = title;
         this.author = author;
-        this.callNumber = callNumber;
-        this.borrower = null;
-        this.daysLate = 0;
-        this.lateFee = 0.0;
-        this.bookCount = 1; // Assuming each book starts with a count of 1
+        this.available = true;
+        this.borrower = null; // Initialize borrower to null
+        this.dueDate = null; // Initialize dueDate to null
     }
 
-    // Getters and Setters
+    public String getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public boolean isAvailable() {
+        return available;
     }
 
-    public String getCallNumber() {
-        return callNumber;
-    }
-
-    public void setCallNumber(String callNumber) {
-        this.callNumber = callNumber;
-    }
-
-    public Members getBorrower() {
+    public String getBorrower() {
         return borrower;
     }
 
-    public void setBorrower(Members borrower) {
+    public void setBorrower(String borrower) {
         this.borrower = borrower;
     }
 
-    public int getDaysLate() {
-        return daysLate;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setDaysLate(int daysLate) {
-        this.daysLate = daysLate;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public double getLateFee() {
-        return lateFee;
+    public void checkoutBook(String memberName) {
+        if (this.available) {
+            this.available = false;
+            this.borrower = memberName;
+            this.dueDate = new Date(System.currentTimeMillis() + (7 * 24 * 60 * 60 * 1000)); // 7 days from now
+        }
     }
 
-    public void setLateFee(double lateFee) {
-        this.lateFee = lateFee;
-    }
-    public int compareTo(Book book) {
-    	if(this.getTitle() == book.getTitle()) {
-    		return 1;
-    	}
-    	if(this.getCallNumber() == book.getCallNumber()) {
-    		return 0;
-    	}
-    	else {
-    		return -1;
-    	}
-    }
-    public int getBookCount() {
-        return bookCount;
+    public void returnBook() {
+        if (!this.available) {
+            this.available = true;
+            this.borrower = null;
+            this.dueDate = null;
+        }
     }
 
-    public void setBookCount(int bookCount) {
-        this.bookCount = bookCount;
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", available=" + available +
+                ", borrower='" + borrower + '\'' +
+                ", dueDate=" + dueDate +
+                '}';
+    }
+    public String toFileFormat() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(id).append(",").append(title).append(",").append(author).append(",");
+        sb.append(available).append(",");
+        if (available) {
+            sb.append("null,null"); // No borrower and due date for available books
+        } else {
+            sb.append(borrower).append(",").append(dueDate.getTime()); // Store borrower and due date
+        }
+        return sb.toString();
     }
 
-    public void calculateLateFee() {
-        this.lateFee = 0.5 * daysLate; 
+    public static Book fromFileFormat(String line) {
+        String[] parts = line.split(",");
+        if (parts.length >= 6) {
+            String id = parts[0];
+            String title = parts[1];
+            String author = parts[2];
+            boolean available = Boolean.parseBoolean(parts[3]);
+            String borrower = parts[4].equals("null") ? null : parts[4];
+            Date dueDate = parts[5].equals("null") ? null : new Date(Long.parseLong(parts[5]));
+            Book book = new Book(id, title, author);
+            book.available = available;
+            book.borrower = borrower;
+            book.dueDate = dueDate;
+            return book;
+        } else {
+            // Handle case where there are not enough elements in the array
+            return null; // Or throw an exception
+        }
     }
-
+    
 }
