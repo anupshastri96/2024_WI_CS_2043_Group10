@@ -76,6 +76,7 @@ public class Book {
                 ", dueDate=" + dueDate +
                 '}';
     }
+    
     public String toFileFormat() {
         StringBuilder sb = new StringBuilder();
         sb.append(id).append(",").append(title).append(",").append(author).append(",");
