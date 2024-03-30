@@ -1,111 +1,144 @@
-import java.util.Date;
+import java.io.*;
+import java.util.*;
 
-public class Book {
-    private String id;
-    private String title;
-    private String author;
-    private boolean available;
-    private String borrower; // New field to store borrower's name
-    private Date dueDate; // New field to store due date for borrowed books
+public class Library {
+    List<Book> books = new ArrayList<>();
+    List<Member> members = new ArrayList<>();
 
-    public Book(String id, String title, String author) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.available = true;
-        this.borrower = null; // Initialize borrower to null
-        this.dueDate = null; // Initialize dueDate to null
+    public Library() {
+        loadBooksFromFile();
+        loadMembersFromFile();
     }
 
-    public String getId() {
-        return id;
+    public void addBook(Book book) {
+        books.add(book);
+        saveBooksToFile();
     }
 
-    public String getTitle() {
-        return title;
+    public void removeBook(Book book) {
+        books.remove(book);
+        saveBooksToFile();
     }
 
-    public String getAuthor() {
-        return author;
+    public List<Book> searchBooksByTitle(String title) {
+        List<Book> result = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
+                result.add(book);
+            }
+        }
+        return result;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public List<Book> searchBooksByAuthor(String author) {
+        List<Book> result = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) {
+                System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
+                result.add(book);
+            }
+        }
+        return result;
     }
 
-    public String getBorrower() {
-        return borrower;
+    public Book findBookById(String id) {
+        for (Book book : books) {
+            if (book.getId().equals(id)) {
+                return book;
+            }
+        }
+        return null;
     }
 
-    public void setBorrower(String borrower) {
-        this.borrower = borrower;
+    public boolean addMember(Member member) {
+        if (!members.contains(member)) {
+            members.add(member);
+            saveMembersToFile();
+            return true;
+        }
+        return false;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public boolean removeMember(String memberId) {
+        Iterator<Member> iterator = members.iterator();
+        while (iterator.hasNext()) {
+            Member member = iterator.next();
+            if (member.getId().equals(memberId)) {
+                iterator.remove();
+                saveMembersToFile();
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public Member findMemberById(String memberId) {
+        for (Member member : members) {
+            if (member.getId().equals(memberId)) {
+                return member;
+            }
+        }
+        return null;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public void checkoutBook(String memberName) {
-        if (this.available) {
-            this.available = false;
-            this.borrower = memberName;
-            this.dueDate = new Date(System.currentTimeMillis() + (7 * 24 * 60 * 60 * 1000)); // 7 days from now
+    private void saveBooksToFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("books.txt"))) {
+            for (Book book : books) {
+                writer.println(book.toFileFormat());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void returnBook() {
-        if (!this.available) {
-            this.available = true;
-            this.borrower = null;
-            this.dueDate = null;
+    private void loadBooksFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("books.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                books.add(Book.fromFileFormat(line));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", available=" + available +
-                ", borrower='" + borrower + '\'' +
-                ", dueDate=" + dueDate +
-                '}';
-    }
-    public String toFileFormat() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(id).append(",").append(title).append(",").append(author).append(",");
-        sb.append(available).append(",");
-        if (available) {
-            sb.append("null,null"); // No borrower and due date for available books
-        } else {
-            sb.append(borrower).append(",").append(dueDate.getTime()); // Store borrower and due date
+    private void saveMembersToFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("members.txt"))) {
+            for (Member member : members) {
+                writer.println(member.toFileFormat());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return sb.toString();
     }
 
-    public static Book fromFileFormat(String line) {
-        String[] parts = line.split(",");
-        if (parts.length >= 6) {
-            String id = parts[0];
-            String title = parts[1];
-            String author = parts[2];
-            boolean available = Boolean.parseBoolean(parts[3]);
-            String borrower = parts[4].equals("null") ? null : parts[4];
-            Date dueDate = parts[5].equals("null") ? null : new Date(Long.parseLong(parts[5]));
-            Book book = new Book(id, title, author);
-            book.available = available;
-            book.borrower = borrower;
-            book.dueDate = dueDate;
-            return book;
-        } else {
-            // Handle case where there are not enough elements in the array
-            return null; // Or throw an exception
+    private void loadMembersFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("members.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                members.add(Member.fromFileFormat(line));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    public Member findMemberByName(String memberName) {
+        for (Member member : members) {
+            if (member.getName().equalsIgnoreCase(memberName)) {
+                return member;
+            }
+        }
+        return null;
+    }
+    public void searchBooks(String searchText) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(searchText) || book.getAuthor().equalsIgnoreCase(searchText)) {
+                System.out.println(book);
+            }
+        }
+    }
+    
     
 }
