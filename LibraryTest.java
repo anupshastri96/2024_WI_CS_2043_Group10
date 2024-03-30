@@ -1,7 +1,7 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class LibraryTest {
+class LibraryTest {
 
     @Test
     public void testAddBook() {
