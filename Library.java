@@ -15,18 +15,25 @@ public class Library {
 	public void trackBook (Book book) {
 	}
 	
-	//work on checkOutBook function
-	public void checkOutBook (Book book) {
+	
+	public void checkOutBook (Book book, LocalDate dateCheckedOut) {
+
 		bookList.remove(book);
 		
 	}
 	
-	//work on checkOutBook function
-	public void returnBook(Book book) {
+	
+	public void returnBook(Book book, LocalDate dueDate) {
+		double lateFees = 0; 
+		int daysLate = 0;
+		LocalDate dateReturned = LocalDate.now();
+		if(dueDate<dateReturned){
+			daysLate = dateReturned - dueDate;
+			lateFees = daysLate * 3;
+		}
 		bookList.add(book);
 	}
 	
-	//work on checkOutBook function
 	public void searchBook (Book book) {
 	}
 	//work on checkOutBook function
