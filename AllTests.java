@@ -87,7 +87,7 @@ public class AllTests {
 	@Test
 	void testToFileFormat() {
 		Members member = new Members("1", "John Doe", "123456789", "123 Main St");
-		String expectedString = "1;John Doe; 123456789;123 Main St";
+		String expectedString = "1;John Doe;123456789;123 Main St";
 		String text = "";
 		try {
 			text = member.toFileFormat();
@@ -128,28 +128,27 @@ public class AllTests {
 	    @Test
 	    void testAddMember() {
 		Library library = new Library();
-		Members member = new Members("1", "John Doe", "123456789", "123 Main St");
+		Members member = new Members("10", "John Doe", "123456789", "123 Main St");
 		try {
-			
 			library.addMember(member);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Assert.assertEquals(member, library.findMemberById("1"));
+		Assert.assertEquals(member, library.findMemberById("10"));
 	    }
 
 	    @Test
 	    void testRemoveMember() {
 		Library library = new Library();
 		try {
-			Members member = new Members("1", "John Doe", "123456789", "123 Main St");
+			Members member = new Members("5", "John Doe", "123456789", "123 Main St");
 			library.addMember(member);
-			library.removeMember("1");
+			library.removeMember("5");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Assert.assertNull(library.findMemberById("1")); 
+		Assert.assertNull(library.findMemberById("5")); 
 	    }
 }
