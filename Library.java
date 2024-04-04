@@ -24,7 +24,6 @@ public class Library {
         List<Book> result = new ArrayList<>();
         for (Book book : books) {
             if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
-                System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
                 result.add(book);
             }
         }
@@ -35,7 +34,6 @@ public class Library {
         List<Book> result = new ArrayList<>();
         for (Book book : books) {
             if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) {
-                System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
                 result.add(book);
             }
         }
@@ -61,8 +59,7 @@ public class Library {
     }
 
     public boolean removeMember(String memberId) {
-        Iterator<Members> iterator = members.iterator();
-        while (iterator.hasNext()) {
+        for (Iterator<Members> iterator = members.iterator(); iterator.hasNext();) {
             Members member = iterator.next();
             if (member.getId().equals(memberId)) {
                 iterator.remove();
@@ -72,7 +69,7 @@ public class Library {
         }
         return false;
     }
-    
+
     public Members findMemberById(String memberId) {
         for (Members member : members) {
             if (member.getId().equals(memberId)) {
@@ -88,18 +85,24 @@ public class Library {
                 writer.println(book.toFileFormat());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error saving books to file: " + e.getMessage());
         }
     }
 
     private void loadBooksFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("books.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                books.add(Book.fromFileFormat(line));
+        File file = new File("books.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    Book book = Book.fromFileFormat(line);
+                    if (book != null) {
+                        books.add(book);
+                    }
+                }
+            } catch (IOException e) {
+                System.err.println("Error loading books from file: " + e.getMessage());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -109,18 +112,24 @@ public class Library {
                 writer.println(member.toFileFormat());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error saving members to file: " + e.getMessage());
         }
     }
 
     private void loadMembersFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("members.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                members.add(Members.fromFileFormat(line));
+        File file = new File("members.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    Members member = Members.fromFileFormat(line);
+                    if (member != null) {
+                        members.add(member);
+                    }
+                }
+            } catch (IOException e) {
+                System.err.println("Error loading members from file: " + e.getMessage());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -132,13 +141,39 @@ public class Library {
         }
         return null;
     }
-    public void searchBooks(String searchText) {
+
+    public boolean checkoutBook(String bookId, String memberId) {
+        Book book = findBookById(bookId);
+        Members member = findMemberById(memberId);
+        if (book != null && member != null && book.isAvailable()) {
+            book.checkoutBook(member.getName());
+            saveBooksToFile();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean returnBook(String bookId) {
+        Book book = findBookById(bookId);
+        if (book != null && !book.isAvailable()) {
+            book.returnBook();
+            saveBooksToFile();
+            return true;
+        }
+        return false;
+    }
+
+    // The search functionality is already implemented in searchBooksByTitle and searchBooksByAuthor.
+    // If you want to combine these into a single search function, you could implement it like this:
+
+    public List<Book> searchBooks(String searchText) {
+        List<Book> foundBooks = new ArrayList<>();
         for (Book book : books) {
-            if (book.getTitle().equalsIgnoreCase(searchText) || book.getAuthor().equalsIgnoreCase(searchText)) {
-                System.out.println(book);
+            if (book.getTitle().toLowerCase().contains(searchText.toLowerCase()) ||
+                book.getAuthor().toLowerCase().contains(searchText.toLowerCase())) {
+                foundBooks.add(book);
             }
         }
+        return foundBooks; // Add this line to return the result
     }
-    
-    
-}
+    }
