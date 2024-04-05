@@ -69,6 +69,7 @@ public class Library {
         }
         return false;
     }
+    
 
     public Members findMemberById(String memberId) {
         for (Members member : members) {
@@ -163,8 +164,7 @@ public class Library {
         return false;
     }
 
-    // The search functionality is already implemented in searchBooksByTitle and searchBooksByAuthor.
-    // If you want to combine these into a single search function, you could implement it like this:
+
 
     public List<Book> searchBooks(String searchText) {
         List<Book> foundBooks = new ArrayList<>();
@@ -174,6 +174,17 @@ public class Library {
                 foundBooks.add(book);
             }
         }
-        return foundBooks; // Add this line to return the result
+        return foundBooks; 
     }
+
+
+    public Members findMemberByPhoneNumber(String phoneNumber) {
+        for (Members member : members) {
+            if (member.getPhoneNumber().equals(phoneNumber)) {
+                return member;
+            }
+        }
+        return null;
+    }
+    
     }
