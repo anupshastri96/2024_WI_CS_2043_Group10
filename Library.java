@@ -81,7 +81,7 @@ public class Library {
     }
 
     private void saveBooksToFile() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("books.txt"))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("Books.txt"))) {
             for (Book book : books) {
                 writer.println(book.toFileFormat());
             }
@@ -91,7 +91,7 @@ public class Library {
     }
 
     private void loadBooksFromFile() {
-        File file = new File("books.txt");
+        File file = new File("Books.txt");
         if (file.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
@@ -108,7 +108,7 @@ public class Library {
     }
 
     private void saveMembersToFile() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("members.txt"))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("Members.txt"))) {
             for (Members member : members) {
                 writer.println(member.toFileFormat());
             }
@@ -118,7 +118,7 @@ public class Library {
     }
 
     private void loadMembersFromFile() {
-        File file = new File("members.txt");
+        File file = new File("Members.txt");
         if (file.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
@@ -160,8 +160,8 @@ public class Library {
             book.returnBook();
             saveBooksToFile();
             return true;
-        }
-        return false;
+        }else {
+        return false; }
     }
 
 
