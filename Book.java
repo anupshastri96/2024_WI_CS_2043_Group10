@@ -39,12 +39,20 @@ public class Book {
 
     public void returnBook() {
         if (!this.available) {
-            this.available = true;
-            this.borrower = "";
-            this.dueDate = null; 
+        	this.available = true;
+		this.borrower = "";
+		this.dueDate = null; 
         }
     }
     
+    public boolean checkDate() {
+        Date date = new Date(System.currentTimeMillis());
+    	if (this.getDueDate().compareTo(date) >= 0) { 
+    		return true;
+    	} else {
+    	  return false;
+        }
+    }
 
     @Override
     public String toString() {
