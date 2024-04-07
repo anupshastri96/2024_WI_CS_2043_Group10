@@ -194,11 +194,18 @@ public class LibraryManagementSystemGUI extends JFrame {
 
     private void returnBook() {
         String bookId = returnBookIdInput.getText();
-        if (library.returnBook(bookId)) {
-            statusLabel.setText("Book returned successfully.");
+        Book book = library.findBookById(bookId);
+        if (book.checkDate()) {
+        	if (library.returnBook(bookId)) {
+                     statusLabel.setText("Book returned successfully.");
+                } else {
+                     statusLabel.setText("Return failed. Book may not exist or is not checked out.");
+                }
         } else {
-            statusLabel.setText("Return failed. Book may not exist or is not checked out.");
+                library.returnBook(bookId);
+        	statusLabel.setText("Late fee of $10 should be charged");
         }
+        
     }
 
     private void addMember() {
